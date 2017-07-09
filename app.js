@@ -9,6 +9,7 @@ mongoose.connect('mongodb://localhost/library/Todo');
 
 var index = require('./routes/index');
 var todo = require('./routes/todo');
+var user = require('./routes/user');
 
 var app = express();
 
@@ -24,13 +25,14 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 var db = mongoose.connection;
-db.on('error', console.error.bind(console, 'connection error : '))
+db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function() {
-  console.log('connected');
-})
+   console.log(`Connected`)
+});
 
 app.use('/', index);
-app.use('/',todo);
+app.use('/api/todo',todo);
+app.use('/api/user', user);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
